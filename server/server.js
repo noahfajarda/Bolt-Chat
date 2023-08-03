@@ -6,6 +6,8 @@ const helmet = require("helmet")
 
 const app = express();
 const PORT = 3001;
+const cors = require("cors")
+const authRouter = require("./routers/authRouter")
 
 const server = require('http').createServer(app);
 
@@ -17,11 +19,13 @@ const io = new Server(server, {
 })
 
 app.use(helmet());
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}))
 app.use(express.json())
 
-app.get("/", (req, res) => {
-  res.send("testing")
-})
+app.use("/auth", authRouter)
 
 io.on("connect", socket => { });
 
