@@ -9,8 +9,7 @@ import {
   Input,
   VStack,
 } from "@chakra-ui/react";
-import { Formik, useFormik } from "formik";
-import React from "react";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
@@ -34,6 +33,30 @@ export default function Login() {
     onSubmit: (values, actions) => {
       alert(JSON.stringify(values, null, 2));
       actions.resetForm();
+      const vals = { ...values };
+      alert(JSON.stringify(values, null, 2));
+      actions.resetForm();
+      fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        credentials: "include",
+        header: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(vals),
+      })
+        .catch((err) => {
+          return err;
+        })
+        .then((res) => {
+          if (!res || !res.ok || res.status >= 400) {
+            return;
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if (!data) return;
+          console.log(data);
+        });
     },
   });
   return (
