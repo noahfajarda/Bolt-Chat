@@ -19,12 +19,14 @@ const io = new Server(server, {
 })
 
 app.use(helmet());
+// specify middleware to communicate with server
 app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
 }))
 app.use(express.json())
 
+// middleware access to routes
 app.use("/auth", authRouter)
 
 io.on("connect", socket => { });
