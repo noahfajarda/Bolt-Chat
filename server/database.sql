@@ -6,3 +6,9 @@ CREATE TABLE users(
 );
 
 INSERT INTO users(username, passhash) values($1,$2);
+
+
+-- useful commands
+-- SELECT * FROM users; ---- get all users
+-- DELETE FROM users; ---- delete all users
+-- TRUNCATE TABLE users RESTART IDENTITY; ---- delete all users & reset user table ids
