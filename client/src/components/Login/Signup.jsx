@@ -11,7 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
+import { validationSchema } from "../../utils/validateForm";
+import { attemptSignup } from "../../utils/APIcalls";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -20,43 +21,14 @@ export default function Signup() {
       username: "",
       password: "",
     },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .required("Username required!")
-        .min(6, "Username too short!")
-        .max(28, "Username too long!"),
-      password: Yup.string()
-        .required("Password required!")
-        .min(6, "Password too short!")
-        .max(28, "Password too long!"),
-    }),
-    onSubmit: (values, actions) => {
-      const vals = { ...values };
-      alert(JSON.stringify(values, null, 2));
+    validationSchema,
+    onSubmit: async (values, actions) => {
+      // reset form and attempt login
       actions.resetForm();
-      fetch("http://localhost:3000/auth/register", {
-        method: "POST",
-        credentials: "include",
-        header: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(vals),
-      })
-        .catch((err) => {
-          return err;
-        })
-        .then((res) => {
-          if (!res || !res.ok || res.status >= 400) {
-            return;
-          }
-          return res.json();
-        })
-        .then((data) => {
-          if (!data) return;
-          console.log(data);
-        });
+      attemptSignup(values);
     },
   });
+
   return (
     <VStack
       as="form"
