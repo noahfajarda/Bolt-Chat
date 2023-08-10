@@ -7,24 +7,47 @@ const helmet = require("helmet")
 const app = express();
 const PORT = 3001;
 const cors = require("cors")
+require("dotenv").config()
+
+// express session
+const session = require("express-session");
+
+// routes
 const authRouter = require("./routers/authRouter")
 
 const server = require('http').createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     credentials: "true"
   }
 })
 
+// add body parser to read body from React
+app.use(require("body-parser").json())
 app.use(helmet());
+
 // specify middleware to communicate with server
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "http://localhost:5173",
   credentials: true
 }))
 app.use(express.json())
+
+// initialize express session & configuration
+app.use(session({
+  secret: process.env.COOKIE_SECRET,
+  credentials: true,
+  name: "sid",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.ENVIRONMENT === "production",
+    httpOnly: true,
+    sameSite: process.env.ENVIRONMENT === "production" ? "none" : "lax",
+  }
+}))
 
 // middleware access to routes
 app.use("/auth", authRouter)

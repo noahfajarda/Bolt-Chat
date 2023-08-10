@@ -9,11 +9,11 @@ export const attemptSignup = async (values) => {
       },
       body: JSON.stringify(values),
     });
-    const loginResponse = await attemptSignup.json();
-    if (!loginResponse) return;
+    const signupResponse = await attemptSignup.json();
+    if (!signupResponse) return;
 
     // console.log the response
-    console.log(loginResponse);
+    console.log(signupResponse);
   } catch (err) {
     console.error(err);
     return err;
