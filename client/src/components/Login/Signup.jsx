@@ -7,28 +7,35 @@ import {
   FormLabel,
   Heading,
   Input,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { validationSchema } from "../../utils/validateForm";
 import { attemptSignup } from "../../utils/APIcalls";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AccountContext } from "../AccountContext";
 
 export default function Signup() {
-  const { setUser } = useContext(AccountContext);
   const navigate = useNavigate();
+  // retrieve user from context provider
+  const { setUser } = useContext(AccountContext);
+
+  const [error, setError] = useState(null);
+
+  // declare formik (form) state to declare & validate values, & handle form submission
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
+    // validate form
     validationSchema,
     onSubmit: async (values, actions) => {
       // reset form and attempt login
       actions.resetForm();
-      attemptSignup(values, navigate, setUser);
+      attemptSignup(values, navigate, setUser, setError);
     },
   });
 
@@ -43,6 +50,10 @@ export default function Signup() {
       onSubmit={formik.handleSubmit}
     >
       <Heading>Sign Up</Heading>
+      {/* show 'error' if there is one */}
+      <Text as="p" color="red.500">
+        {error}
+      </Text>
       {/* FormControl == better way to create forms */}
       <FormControl
         isInvalid={formik.errors.username && formik.touched.username}
