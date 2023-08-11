@@ -3,6 +3,7 @@ import { useColorMode } from "@chakra-ui/color-mode";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 export default function ToggleColorMode() {
+  // change 'color mode' text
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Button
@@ -12,6 +13,7 @@ export default function ToggleColorMode() {
       right="0"
       m="1rem"
     >
+      {/* conditional for color mode */}
       {colorMode === "dark" ? (
         <SunIcon color="orange.400" />
       ) : (

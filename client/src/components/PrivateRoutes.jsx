@@ -8,6 +8,7 @@ const useAuth = () => {
 };
 
 const PrivateRoutes = () => {
+  // check if context contains a logged in user
   const isAuth = useAuth();
   return isAuth ? <Outlet /> : <Navigate to="/" />;
 };
