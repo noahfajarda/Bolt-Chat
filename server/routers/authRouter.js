@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt")
 
 // specify routes
 router.post("/login", async (req, res) => {
+  console.log(req.session)
   // form validation
   validateForm(req, res);
 
@@ -15,7 +16,7 @@ router.post("/login", async (req, res) => {
   console.log(hashedPass)
 
   // query to check if user already exists
-  const existingUser = await pool.query("SELECT username, passhash FROM users WHERE username=$1", [req.body.username]);
+  const existingUser = await pool.query("SELECT id, username, passhash FROM users WHERE username=$1", [req.body.username]);
   console.log(existingUser)
 
   if (existingUser.rowCount > 0) {
@@ -36,7 +37,7 @@ router.post("/login", async (req, res) => {
         id: existingUser.rows[0].id,
       }
 
-      return res.json({ loggedIn: true, username });
+      return res.json({ loggedIn: true, username, });
     } else {
       // dont' log in
       console.log("Login failed")
