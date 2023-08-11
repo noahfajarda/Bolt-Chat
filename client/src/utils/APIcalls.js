@@ -40,6 +40,9 @@ export const attemptLogin = async (values, navigate, setUser) => {
     // console.log the response
     console.log(loginResponse);
     setUser({ ...loginResponse })
+
+    // REMOVE LATER: setting session to local storage
+    localStorage.setItem('user', JSON.stringify(loginResponse.session));
     navigate("/home")
   } catch (err) {
     console.error(err);

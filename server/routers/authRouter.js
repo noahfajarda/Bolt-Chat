@@ -37,7 +37,8 @@ router.post("/login", async (req, res) => {
         id: existingUser.rows[0].id,
       }
 
-      return res.json({ loggedIn: true, username, });
+      // REMOVE LATER: add session to returned object
+      return res.json({ loggedIn: true, username, session: req.session });
     } else {
       // dont' log in
       console.log("Login failed")
