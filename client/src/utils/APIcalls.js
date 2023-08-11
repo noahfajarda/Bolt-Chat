@@ -66,3 +66,30 @@ export const attemptLogin = async (values, navigate, setUser, setError) => {
     return err;
   }
 }
+
+export const getLoggedInUserData = async (setUser, navigate) => {
+  const getLoggedInUserData = await fetch(
+    "http://localhost:3001/auth/login",
+    {
+      credentials: "include",
+    }
+  );
+
+  if (
+    !getLoggedInUserData ||
+    !getLoggedInUserData.ok ||
+    getLoggedInUserData.status >= 400
+  ) {
+    setUser({ loggedIn: false });
+    return;
+  }
+
+  const loggedInUserDataResponse = await getLoggedInUserData.json();
+
+  if (!loggedInUserDataResponse) {
+    setUser({ loggedIn: false });
+    return;
+  }
+  navigate("/home");
+  setUser({ ...loggedInUserDataResponse });
+};
