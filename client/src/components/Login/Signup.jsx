@@ -13,8 +13,11 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { validationSchema } from "../../utils/validateForm";
 import { attemptSignup } from "../../utils/APIcalls";
+import { useContext } from "react";
+import { AccountContext } from "../AccountContext";
 
 export default function Signup() {
+  const { setUser } = useContext(AccountContext);
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -25,7 +28,7 @@ export default function Signup() {
     onSubmit: async (values, actions) => {
       // reset form and attempt login
       actions.resetForm();
-      attemptSignup(values);
+      attemptSignup(values, navigate, setUser);
     },
   });
 
