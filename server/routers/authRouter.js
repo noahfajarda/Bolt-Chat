@@ -6,51 +6,60 @@ const pool = require("../db.js")
 const bcrypt = require("bcrypt")
 
 // specify routes
-router.post("/login", async (req, res) => {
-  console.log(req.session)
-  // form validation
-  validateForm(req, res);
+router
+  .route("/login")
+  .get(async (req, res) => {
+    console.log(req.session)
+    if (req.session.user && req.session.user.username) {
+      res.json({ loggedIn: true, username: req.session.user.username })
+    } else {
+      res.json({ loggedIn: false })
+    }
+  })
+  .post(async (req, res) => {
+    console.log(req.session)
+    // form validation
+    validateForm(req, res);
 
-  // hash entered password
-  const hashedPass = await bcrypt.hash(req.body.password, 10);
-  console.log(hashedPass)
+    // hash entered password
+    const hashedPass = await bcrypt.hash(req.body.password, 10);
+    console.log(hashedPass)
 
-  // query to check if user already exists
-  const existingUser = await pool.query("SELECT id, username, passhash FROM users WHERE username=$1", [req.body.username]);
-  console.log(existingUser)
+    // query to check if user already exists
+    const existingUser = await pool.query("SELECT id, username, passhash FROM users WHERE username=$1", [req.body.username]);
+    console.log(existingUser)
 
-  if (existingUser.rowCount > 0) {
-    // compare USER ENTERED password with the DB pass HASH
-    const isSamePass = await bcrypt.compare(
-      req.body.password,
-      existingUser.rows[0].passhash
-    );
-    console.log(isSamePass) // TRUE
+    if (existingUser.rowCount > 0) {
+      // compare USER ENTERED password with the DB pass HASH
+      const isSamePass = await bcrypt.compare(
+        req.body.password,
+        existingUser.rows[0].passhash
+      );
+      console.log(isSamePass) // TRUE
 
 
-    // if password hashes match...
-    if (isSamePass) {
-      const username = req.body.username;
-      // login
-      req.session.user = {
-        username,
-        id: existingUser.rows[0].id,
+      // if password hashes match...
+      if (isSamePass) {
+        const username = req.body.username;
+        // login
+        req.session.user = {
+          username,
+          id: existingUser.rows[0].id,
+        }
+
+        return res.json({ loggedIn: true, username, session: req.session });
+      } else {
+        // dont' log in
+        console.log("Login failed")
+        return res.json({ loggedIn: false, status: "Wrong username or password!" })
       }
 
-      // REMOVE LATER: add session to returned object
-      return res.json({ loggedIn: true, username, session: req.session });
+
     } else {
-      // dont' log in
-      console.log("Login failed")
+      // if USER NOT GOOD, don't log in
       return res.json({ loggedIn: false, status: "Wrong username or password!" })
     }
-
-
-  } else {
-    // if USER NOT GOOD, don't log in
-    return res.json({ loggedIn: false, status: "Wrong username or password!" })
-  }
-})
+  })
 
 router.post("/signup", async (req, res) => {
   // form validation
@@ -71,7 +80,7 @@ router.post("/signup", async (req, res) => {
       id: newUserQuery.rows[0].id,
     }
 
-    res.json({ loggedIn: true, username: req.body.username });
+    res.json({ loggedIn: true, username: req.body.username, session: req.session });
   } else {
     // username already exists
     res.json({ loggedIn: false, status: "Username taken" });
