@@ -1,5 +1,5 @@
 // login
-export const attemptSignup = async (values) => {
+export const attemptSignup = async (values, navigate, setUser) => {
   try {
     // attempt to login using API
     const attemptSignup = await fetch("http://localhost:3001/auth/signup", {
@@ -14,6 +14,8 @@ export const attemptSignup = async (values) => {
 
     // console.log the response
     console.log(signupResponse);
+    setUser({ ...signupResponse })
+    navigate("/home")
   } catch (err) {
     console.error(err);
     return err;
@@ -21,8 +23,9 @@ export const attemptSignup = async (values) => {
 }
 
 // login
-export const attemptLogin = async (values) => {
+export const attemptLogin = async (values, navigate, setUser) => {
   try {
+    console.log(values)
     // attempt to login using API
     const attemptLogin = await fetch("http://localhost:3001/auth/login", {
       method: "POST",
@@ -36,6 +39,8 @@ export const attemptLogin = async (values) => {
 
     // console.log the response
     console.log(loginResponse);
+    setUser({ ...loginResponse })
+    navigate("/home")
   } catch (err) {
     console.error(err);
     return err;
