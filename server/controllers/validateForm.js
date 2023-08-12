@@ -13,7 +13,7 @@ const formSchema = Yup.object({
 })
 
 
-const validateForm = (req, res) => {
+const validateForm = (req, res, next) => {
   const formData = req.body;
 
   // server-side form validation
@@ -27,6 +27,9 @@ const validateForm = (req, res) => {
     // form is validated
     if (valid) {
       console.log("Form is good")
+      next()
+    } else {
+      res.status(422).send();
     }
   })
 }
