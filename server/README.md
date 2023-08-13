@@ -8,6 +8,8 @@ Tech used:
 - "bcrypt"
 - "pg" --- connect to PostgreSQL
 - "express-session"
+- "redis" "ioredis"
+- 'jwt'
 
 use POSTGRESQL:
 -- open 'PostgreSQL' app ---- connect to POSTGRESQL server

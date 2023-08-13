@@ -3,12 +3,11 @@ const router = express.Router()
 const validateForm = require("../controllers/validateForm")
 
 // import auth controller
-const { handleLogin, attemptLogin, attemptRegister } = require("../controllers/authController")
+const { attemptLogin, attemptRegister } = require("../controllers/authController")
 
 // specify routes
 router
   .route("/login")
-  .get(handleLogin)
   .post(validateForm, attemptLogin)
 
 router.post("/signup", validateForm, attemptRegister)

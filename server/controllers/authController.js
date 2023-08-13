@@ -1,14 +1,7 @@
 // integrate PostgreSQL db
 const pool = require("../db.js")
 const bcrypt = require("bcrypt")
-
-module.exports.handleLogin = (req, res) => {
-  if (req.session.user && req.session.user.username) {
-    res.json({ loggedIn: true, username: req.session.user.username })
-  } else {
-    res.json({ loggedIn: false })
-  }
-}
+const { signToken } = require('../utils/auth');
 
 module.exports.attemptLogin = async (req, res) => {
   // form validation middleware above
@@ -37,8 +30,9 @@ module.exports.attemptLogin = async (req, res) => {
         username,
         id: existingUser.rows[0].id,
       }
+      const token = signToken(req.session)
 
-      return res.json({ loggedIn: true, username, session: req.session });
+      return res.json({ loggedIn: true, username, token });
     } else {
       // dont' log in
       console.log("Login failed")
@@ -70,7 +64,10 @@ module.exports.attemptRegister = async (req, res) => {
       id: newUserQuery.rows[0].id,
     }
 
-    res.json({ loggedIn: true, username: req.body.username, session: req.session });
+    // encode JWT
+    const token = signToken(req.session)
+
+    res.json({ loggedIn: true, username: req.body.username, token });
   } else {
     // username already exists
     res.json({ loggedIn: false, status: "Username taken" });
