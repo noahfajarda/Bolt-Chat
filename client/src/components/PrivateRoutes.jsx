@@ -4,13 +4,19 @@ import { AccountContext } from "./AccountContext";
 
 const useAuth = () => {
   const { user } = useContext(AccountContext);
-  return user && user.loggedIn;
+  return user && user.data;
 };
 
 const PrivateRoutes = () => {
   // check if context contains a logged in user
   const isAuth = useAuth();
-  return isAuth ? <Outlet /> : <Navigate to="/" />;
+
+  return isAuth ? (
+    <Outlet />
+  ) : (
+    // LOOGED IN
+    <Navigate to="/" />
+  );
 };
 
 export default PrivateRoutes;
