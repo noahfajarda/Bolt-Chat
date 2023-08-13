@@ -5,15 +5,15 @@ const { signToken } = require('../utils/auth');
 
 module.exports.attemptLogin = async (req, res) => {
   // form validation middleware above
-  console.log(req.session)
+  // console.log(req.session)
 
   // hash entered password
   const hashedPass = await bcrypt.hash(req.body.password, 10);
-  console.log(hashedPass)
+  // console.log(hashedPass)
 
   // query to check if user already exists
   const existingUser = await pool.query("SELECT id, username, passhash FROM users WHERE username=$1", [req.body.username]);
-  console.log(existingUser)
+  // console.log(existingUser)
 
   if (existingUser.rowCount > 0) {
     // compare USER ENTERED password with the DB pass HASH

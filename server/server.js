@@ -25,9 +25,8 @@ const io = new Server(server, {
 })
 
 // redis
-const Redis = require('ioredis')
 const RedisStore = require('connect-redis')(session)
-const redisClient = new Redis();
+const redisClient = require('./redis')
 
 // add body parser to read body from React
 app.use(require("body-parser").json())
