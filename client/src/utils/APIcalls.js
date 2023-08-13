@@ -1,3 +1,5 @@
+import decode from 'jwt-decode';
+
 // login
 export const attemptSignup = async (values, navigate, setUser, setError) => {
   try {
@@ -22,8 +24,8 @@ export const attemptSignup = async (values, navigate, setUser, setError) => {
       // show the status as Error state
       setError(signupResponse.status)
     } else if (signupResponse.loggedIn) {
-      // console.log the response and navigate to home page
-      console.log(signupResponse);
+      // set session storage to the token
+      sessionStorage.setItem('user', signupResponse.token)
       navigate("/home")
     }
 
@@ -68,28 +70,16 @@ export const attemptLogin = async (values, navigate, setUser, setError) => {
 }
 
 export const getLoggedInUserData = async (setUser, navigate) => {
-  const getLoggedInUserData = await fetch(
-    "http://localhost:3001/auth/login",
-    {
-      credentials: "include",
+  // if data, setUser(true), else, setUser(false)
+  try {
+    const token = decode(sessionStorage.getItem('user'))
+
+    navigate("/home");
+    setUser({ ...token })
+  } catch (e) {
+    if (e.message == "Invalid token specified") {
+      console.log("bad token")
     }
-  );
-
-  if (
-    !getLoggedInUserData ||
-    !getLoggedInUserData.ok ||
-    getLoggedInUserData.status >= 400
-  ) {
     setUser({ loggedIn: false });
-    return;
   }
-
-  const loggedInUserDataResponse = await getLoggedInUserData.json();
-
-  if (!loggedInUserDataResponse) {
-    setUser({ loggedIn: false });
-    return;
-  }
-  navigate("/home");
-  setUser({ ...loggedInUserDataResponse });
 };
