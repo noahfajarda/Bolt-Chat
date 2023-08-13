@@ -24,6 +24,11 @@ const io = new Server(server, {
   }
 })
 
+// redis
+const Redis = require('ioredis')
+const RedisStore = require('connect-redis')(session)
+const redisClient = new Redis();
+
 // add body parser to read body from React
 app.use(require("body-parser").json())
 app.use(helmet());
@@ -42,6 +47,7 @@ app.use(session({
   name: "sid",
   resave: false,
   saveUninitialized: false,
+  store: new RedisStore({ client: redisClient }),
   cookie: {
     secure: process.env.ENVIRONMENT === "production" ? "true" : "auto",
     httpOnly: true,
