@@ -18,6 +18,7 @@ use POSTGRESQL:
 -- createdb messenger ---- create database named "messenger"
 -- psql -d messenger ---- connect to DB
 -- pqsql ---- connect to default DB
+-- open sql file to view relevant PostgreSQL commands
 
 install POSTGRESQL cli:
 -- brew doctor
