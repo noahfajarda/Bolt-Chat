@@ -1,5 +1,7 @@
 Tech used:
 
+- has an API request limiter using redis
+
 - "express"
 - "helmet"
 - "socket.io"
