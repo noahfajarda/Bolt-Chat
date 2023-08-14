@@ -5,6 +5,7 @@ import Login from "./Login/Login";
 import Signup from "./Login/Signup";
 import PrivateRoutes from "./PrivateRoutes";
 import { AccountContext } from "./AccountContext";
+import Home from "./Home/Home";
 
 // pages for application
 export default function Views() {
@@ -20,7 +21,7 @@ export default function Views() {
       <Route path="/register" element={<Signup />} />
       {/* protected routes */}
       <Route element={<PrivateRoutes />}>
-        <Route path="/home" element={<Text>Hi welcome home</Text>} />
+        <Route path="/home" element={<Home />} />
       </Route>
       {/* rest of routes */}
       <Route path="*" element={<Login />} />
