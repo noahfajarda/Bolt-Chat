@@ -9,56 +9,36 @@ const PORT = 3001;
 const cors = require("cors")
 require("dotenv").config()
 
-// express session
-const session = require("express-session");
-
 // routes
-const authRouter = require("./routers/authRouter")
+const authRouter = require("./routers/authRouter");
+
+// session middleware
+const { sessionMiddleware, wrap, corsConfig } = require('./controllers/serverController');
 
 const server = require('http').createServer(app);
 
 const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    credentials: "true"
-  }
+  cors: corsConfig
 })
-
-// redis
-const RedisStore = require('connect-redis')(session)
-const redisClient = require('./redis')
 
 // add body parser to read body from React
 app.use(require("body-parser").json())
 app.use(helmet());
 
 // specify middleware to communicate with server
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true
-}))
+app.use(cors(corsConfig))
 app.use(express.json())
 
 // initialize express session & configuration
-app.use(session({
-  secret: process.env.COOKIE_SECRET,
-  credentials: true,
-  name: "sid",
-  resave: false,
-  saveUninitialized: false,
-  store: new RedisStore({ client: redisClient }),
-  cookie: {
-    secure: process.env.ENVIRONMENT === "production" ? "true" : "auto",
-    httpOnly: true,
-    sameSite: process.env.ENVIRONMENT === "production" ? "none" : "lax",
-    expires: 1000 * 60 * 60 * 24 * 7
-  }
-}))
+app.use(sessionMiddleware)
 
 // middleware access to routes
 app.use("/auth", authRouter)
 
-io.on("connect", socket => { });
+io.use(wrap(sessionMiddleware))
+io.on("connect", socket => {
+  console.log(socket.request.session.user.username)
+});
 
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
