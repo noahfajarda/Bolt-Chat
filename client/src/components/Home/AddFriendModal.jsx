@@ -38,7 +38,7 @@ export default function AddFriendModal({ isOpen, onClose }) {
               <TextField
                 label="friend's name"
                 placeholder="Enter friend's username..."
-                autocomplete="off"
+                autoComplete="off"
                 name="friendName"
               />
             </ModalBody>
