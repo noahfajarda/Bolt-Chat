@@ -28,7 +28,7 @@ export default function Sidebar() {
           </Button>
         </HStack>
         <Divider />
-        <VStack as={TabList}>
+        <VStack as={TabList} style={{ borderBottom: "none" }}>
           {friendList.map((friend) => (
             <HStack as={Tab} key={friend?.username}>
               <Circle
