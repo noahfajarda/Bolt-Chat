@@ -14,6 +14,7 @@ const authRouter = require("./routers/authRouter");
 
 // session middleware
 const { sessionMiddleware, wrap, corsConfig } = require('./controllers/serverController');
+const { authorizeUser } = require('./controllers/socketController');
 
 const server = require('http').createServer(app);
 
@@ -37,6 +38,8 @@ app.use("/auth", authRouter)
 
 // use 'wrap' function (closure) with session middleware
 io.use(wrap(sessionMiddleware))
+// socket middleware to check for user session
+io.use(authorizeUser)
 io.on("connect", socket => {
   console.log(socket.id)
   console.log(socket.request.session)
