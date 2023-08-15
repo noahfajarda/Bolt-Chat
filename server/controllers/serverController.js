@@ -26,7 +26,7 @@ const wrap = expressMiddlware => (socket, next) => expressMiddlware(socket.reque
 
 const corsConfig = {
   origin: "http://localhost:5173",
-  credentials: "true"
+  credentials: true
 }
 
 module.exports = { sessionMiddleware, wrap, corsConfig }

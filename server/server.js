@@ -35,9 +35,11 @@ app.use(sessionMiddleware)
 // middleware access to routes
 app.use("/auth", authRouter)
 
+// use 'wrap' function (closure) with session middleware
 io.use(wrap(sessionMiddleware))
 io.on("connect", socket => {
-  console.log(socket.request.session.user.username)
+  console.log(socket.id)
+  console.log(socket.request.session)
 });
 
 server.listen(PORT, () => {
