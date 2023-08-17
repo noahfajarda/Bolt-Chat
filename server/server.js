@@ -41,6 +41,8 @@ io.use(wrap(sessionMiddleware))
 // socket middleware to check for user session
 io.use(authorizeUser)
 io.on("connect", socket => {
+  console.log("USERID: ", socket.user?.userid)
+  console.log(socket)
   console.log(socket.id)
   console.log(socket.request.session)
 });
