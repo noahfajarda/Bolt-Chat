@@ -24,4 +24,4 @@ install POSTGRESQL cli:
 -- brew doctor
 -- brew update
 -- brew install libpq
--- brew link --force libpq
+-- brew link --force libpqc
