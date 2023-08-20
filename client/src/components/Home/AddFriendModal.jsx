@@ -22,6 +22,7 @@ export default function AddFriendModal({ isOpen, onClose }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      {/* darkens background */}
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add a friend!</ModalHeader>
