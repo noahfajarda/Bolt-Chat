@@ -16,13 +16,13 @@ export default function Views() {
     <Text>Loading...</Text>
   ) : (
     <Routes>
-      {/* normal routes */}
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Signup />} />
       {/* protected routes */}
       <Route element={<PrivateRoutes />}>
         <Route path="/home" element={<Home />} />
       </Route>
+      {/* normal routes */}
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Signup />} />
       {/* rest of routes */}
       <Route path="*" element={<Login />} />
     </Routes>
