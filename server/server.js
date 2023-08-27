@@ -14,7 +14,7 @@ const authRouter = require("./routers/authRouter");
 
 // session middleware
 const { sessionMiddleware, wrap, corsConfig } = require('./controllers/serverController');
-const { authorizeUser } = require('./controllers/socketController');
+const { authorizeUser, initializeUser, addFriend } = require('./controllers/socketController');
 
 const server = require('http').createServer(app);
 
@@ -40,11 +40,10 @@ app.use("/auth", authRouter)
 io.use(wrap(sessionMiddleware))
 // socket middleware to check for user session
 io.use(authorizeUser)
+
 io.on("connect", socket => {
-  console.log("USERID: ", socket.user?.userid)
-  console.log(socket)
-  console.log(socket.id)
-  console.log(socket.request.session)
+  initializeUser(socket)
+  socket.on("add_friend", (friendName, cb) => addFriend(socket, friendName, cb))
 });
 
 server.listen(PORT, () => {
