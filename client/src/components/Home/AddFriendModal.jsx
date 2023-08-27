@@ -35,6 +35,7 @@ export default function AddFriendModal({ isOpen, onClose }) {
 
   // function to trigger event to server & add values
   const attemptToAddFriend = (values) => {
+    console.log("test");
     socket.emit(
       "add_friend",
       values.friendName,
