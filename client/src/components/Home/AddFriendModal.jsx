@@ -35,15 +35,19 @@ export default function AddFriendModal({ isOpen, onClose }) {
 
   // function to trigger event to server & add values
   const attemptToAddFriend = (values) => {
-    socket.emit("add_friend", values.friendName, ({ errorMsg, done }) => {
-      if (done) {
-        setFriendList((prev) => [values.friendName, ...prev]);
-        closeModal();
-        return;
+    socket.emit(
+      "add_friend",
+      values.friendName,
+      ({ errorMsg, done, newFriend }) => {
+        if (done) {
+          setFriendList((prev) => [newFriend, ...prev]);
+          closeModal();
+          return;
+        }
+        // show an error
+        setError(errorMsg);
       }
-      // show an error
-      setError(errorMsg);
-    });
+    );
   };
 
   return (

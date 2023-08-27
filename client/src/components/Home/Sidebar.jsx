@@ -32,11 +32,11 @@ export default function Sidebar() {
           {friendList.map((friend, idx) => (
             <HStack as={Tab} key={idx}>
               <Circle
-                bg={friend.connected ? "green.700" : "red.500"}
+                bg={friend?.connected ? "green.700" : "red.500"}
                 w="20px"
                 h="20px"
               />
-              <Text>{friend}</Text>
+              <Text>{friend?.username}</Text>
             </HStack>
           ))}
         </VStack>
