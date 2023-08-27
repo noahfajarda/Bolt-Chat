@@ -14,7 +14,7 @@ const authRouter = require("./routers/authRouter");
 
 // session middleware
 const { sessionMiddleware, wrap, corsConfig } = require('./controllers/serverController');
-const { authorizeUser, initializeUser, addFriend, onDisconnect } = require('./controllers/socketController');
+const { authorizeUser, initializeUser, addFriend, onDisconnect, dm } = require('./controllers/socketController');
 
 const server = require('http').createServer(app);
 
@@ -44,6 +44,7 @@ io.use(authorizeUser)
 io.on("connect", socket => {
   initializeUser(socket)
   socket.on("add_friend", (friendName, cb) => addFriend(socket, friendName, cb))
+  socket.on("dm", (message) => dm(socket, message))
   socket.on("disconnecting", () => onDisconnect(socket))
 });
 
