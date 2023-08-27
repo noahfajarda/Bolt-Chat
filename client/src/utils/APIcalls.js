@@ -4,7 +4,7 @@ import decode from 'jwt-decode';
 export const attemptSignup = async (values, navigate, setUser, setError) => {
   try {
     // attempt to login using API
-    const attemptSignup = await fetch("http://localhost:3001/auth/signup", {
+    const attemptSignup = await fetch("/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export const attemptSignup = async (values, navigate, setUser, setError) => {
 export const attemptLogin = async (values, navigate, setUser, setError) => {
   try {
     // attempt to login using API
-    const attemptLogin = await fetch("http://localhost:3001/auth/login", {
+    const attemptLogin = await fetch("/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
