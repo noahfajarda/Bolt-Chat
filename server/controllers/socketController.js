@@ -17,7 +17,7 @@ module.exports.authorizeUser = (socket, next) => {
 
 module.exports.initializeUser = async (socket) => {
   // retrieve socket for user
-  console.log(socket.request.session)
+  // console.log(socket.request.session)
   socket.user = { ...socket.request.session.user };
   socket.join(socket.user.userid)
 

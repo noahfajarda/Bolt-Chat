@@ -5,15 +5,12 @@ const { signToken } = require('../utils/auth');
 const { v4: uuidv4 } = require("uuid");
 
 module.exports.attemptLogin = async (req, res) => {
-  // console.log(req.session)
 
   // hash entered password
   const hashedPass = await bcrypt.hash(req.body.password, 10);
-  // console.log(hashedPass)
 
   // query to check if user already exists
   const existingUser = await pool.query("SELECT id, username, passhash, userid FROM users WHERE username=$1", [req.body.username]);
-  // console.log(existingUser)
 
   if (existingUser.rowCount > 0) {
     // compare USER ENTERED password with the DB pass HASH
