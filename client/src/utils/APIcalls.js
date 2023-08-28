@@ -62,7 +62,7 @@ export const attemptLogin = async (values, navigate, setUser, setError) => {
       // console.log the response and navigate to home page
       console.log(loginResponse);
       sessionStorage.setItem('user', loginResponse.token)
-      navigate("/home")
+      location.reload();
     }
   } catch (err) {
     console.error(err);
