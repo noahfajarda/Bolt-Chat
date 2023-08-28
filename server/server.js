@@ -45,6 +45,7 @@ io.on("connect", socket => {
   initializeUser(socket)
   socket.on("add_friend", (friendName, cb) => addFriend(socket, friendName, cb))
   socket.on("dm", (message) => dm(socket, message))
+  // will make connected == false
   socket.on("disconnecting", () => onDisconnect(socket))
 });
 
