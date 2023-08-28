@@ -10,7 +10,16 @@ const useSocketSetup = (setFriendList, setMessages) => {
     socket.on("friends", (friendList) => setFriendList(friendList));
     socket.on("messages", (messages) => setMessages(messages));
     socket.on("dm", (message) => {
-      setMessages((prevMsgs) => [message, ...prevMsgs]);
+      setMessages((prevMsgs) => {
+        let match = false;
+        prevMsgs.map((oldMessage) => {
+          if (oldMessage.id === message.id) {
+            match = true;
+          }
+        });
+        if (match) return [...prevMsgs];
+        return [message, ...prevMsgs];
+      });
     });
     socket.on("connected", (status, username) => {
       setFriendList((prevFriends) => {

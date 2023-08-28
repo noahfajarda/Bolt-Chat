@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import socket from "../../socket";
 import { useContext } from "react";
 import { MessagesContext } from "./Home";
+import { v4 as uuidv4 } from "uuid";
 
 export default function ChatBox({ userid }) {
   const { setMessages } = useContext(MessagesContext);
@@ -18,6 +19,7 @@ export default function ChatBox({ userid }) {
       onSubmit={(values, actions) => {
         if (values.message.length == 0) return;
         const message = {
+          id: uuidv4(),
           to: userid,
           from: null,
           content: values.message,

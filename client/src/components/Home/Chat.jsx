@@ -28,7 +28,6 @@ export default function Chat({ userid }) {
                 (msg) => msg.to === friend.userid || msg.from === friend.userid
               )
               .map((message, idx) => {
-                console.log(message);
                 return (
                   <Text
                     m={
